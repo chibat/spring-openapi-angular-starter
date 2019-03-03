@@ -1,9 +1,20 @@
+buildscript {
+  repositories {
+    mavenLocal()
+    mavenCentral()
+  }
+  dependencies {
+    classpath "org.openapitools:openapi-generator-gradle-plugin:3.3.4"
+  }
+}
+
 plugins {
 	id 'org.springframework.boot' version '2.1.3.RELEASE'
 	id 'java'
 }
 
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'org.openapi.generator'
 
 group = 'app'
 version = '0.0.1-SNAPSHOT'
@@ -22,3 +33,23 @@ dependencies {
 	testImplementation 'io.springfox:springfox-swagger2:2.9.2'
 	testImplementation 'io.springfox:springfox-staticdocs:2.6.1'
 }
+
+def SPEC_FILE = "${buildDir}/swagger.json";
+
+task generateSpecFile(type: Test, dependsOn: testClasses) {
+    inputs.files fileTree("${project.rootDir}/src/main/java")
+    outputs.file file(SPEC_FILE)
+    filter {
+        includeTestsMatching "app.backend.SpecGenerator"
+    }
+}
+
+openApiGenerate {
+    generatorName = "typescript-angular"
+    inputSpec = SPEC_FILE.toString()
+    outputDir = "$buildDir".toString()
+}
+
+tasks.openApiGenerate.dependsOn generateSpecFile
+
+
