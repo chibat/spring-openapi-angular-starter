@@ -3,7 +3,6 @@ package app.backend.web;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import io.swagger.annotations.ApiOperation;
 import lombok.Value;
 
@@ -11,7 +10,7 @@ import lombok.Value;
 public class CalculatorController {
 
     @GetMapping("/rest/api/add")
-    @ApiOperation(value = "add", tags = "calculator", nickname = "add") // value いらないのかな
+    @ApiOperation(value = "", tags = "calculator", nickname = "add")
     public Response add(@RequestParam final Integer arg1, @RequestParam final Integer arg2) {
         return new Response(arg1 + arg2);
     }
