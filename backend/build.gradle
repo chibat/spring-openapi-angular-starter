@@ -5,6 +5,7 @@ buildscript {
   }
   dependencies {
     classpath "org.openapitools:openapi-generator-gradle-plugin:3.3.4"
+    classpath "com.moowork.gradle:gradle-node-plugin:1.2.0"
   }
 }
 
@@ -15,6 +16,7 @@ plugins {
 
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'org.openapi.generator'
+apply plugin: 'com.moowork.node'
 
 group = 'app'
 version = '0.0.1-SNAPSHOT'
@@ -38,6 +40,18 @@ def SPEC_FILE = "${buildDir}/swagger.json";
 def FRONTEND_DIR = "${project.rootDir}/../frontend";
 def CLIENT_DIR = "${FRONTEND_DIR}/src/app/client";
 
+openApiGenerate {
+    generatorName = "typescript-angular"
+    inputSpec = SPEC_FILE.toString()
+    outputDir = CLIENT_DIR.toString()
+    additionalProperties = [ngVersion: "7.2.0"]
+}
+
+node {
+    workDir = file(FRONTEND_DIR)
+    nodeModulesDir = file(FRONTEND_DIR)
+}
+
 task generateSpecFile(type: Test, dependsOn: testClasses) {
     inputs.files fileTree("${project.rootDir}/src/main/java")
     outputs.file file(SPEC_FILE)
@@ -46,13 +60,19 @@ task generateSpecFile(type: Test, dependsOn: testClasses) {
     }
 }
 
-openApiGenerate {
-    generatorName = "typescript-angular"
-    inputSpec = SPEC_FILE.toString()
-    outputDir = CLIENT_DIR.toString()
-    additionalProperties = [ngVersion: "7.2.0"]
+task cleanOpenApiGenerate(type: Delete) {
+    delete fileTree(CLIENT_DIR).include('**/*')
+}
+
+task compileFrontend(type: NpmTask) {
+    inputs.files fileTree("${FRONTEND_DIR}/src")
+    outputs.dir file("${buildDir}/resources/main/static")
+    args = ['run', 'build'];
 }
 
 tasks.openApiGenerate.dependsOn generateSpecFile
-
-
+tasks.openApiGenerate.dependsOn cleanOpenApiGenerate
+compileFrontend.dependsOn npmInstall
+compileFrontend.dependsOn tasks.openApiGenerate
+bootJar.dependsOn compileFrontend
+bootRun.dependsOn compileFrontend
