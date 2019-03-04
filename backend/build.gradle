@@ -35,6 +35,8 @@ dependencies {
 }
 
 def SPEC_FILE = "${buildDir}/swagger.json";
+def FRONTEND_DIR = "${project.rootDir}/../frontend";
+def CLIENT_DIR = "${FRONTEND_DIR}/src/app/client";
 
 task generateSpecFile(type: Test, dependsOn: testClasses) {
     inputs.files fileTree("${project.rootDir}/src/main/java")
@@ -47,7 +49,8 @@ task generateSpecFile(type: Test, dependsOn: testClasses) {
 openApiGenerate {
     generatorName = "typescript-angular"
     inputSpec = SPEC_FILE.toString()
-    outputDir = "$buildDir".toString()
+    outputDir = CLIENT_DIR.toString()
+    additionalProperties = [ngVersion: "7.2.0"]
 }
 
 tasks.openApiGenerate.dependsOn generateSpecFile
