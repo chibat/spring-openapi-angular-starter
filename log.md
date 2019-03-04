@@ -5,4 +5,6 @@ $ curl https://start.spring.io/starter.tgz -d dependencies=web,actuator,lombok -
 
 ```
 $ ng new frontend --routing
+$ cd frontend
+$ npm run ng add @angular/material @angular/cdk @angular/animations
 ```
