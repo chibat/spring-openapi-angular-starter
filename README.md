@@ -1,6 +1,8 @@
 
 # Spring -> OpneAPI => Angular Starter
 
+[![Build Status](https://travis-ci.org/chibat/spring-openapi-angular-starter.svg?branch=master)](https://travis-ci.org/chibat/spring-openapi-angular-starter)
+
 ## Feature
 
 * Type safe communication
