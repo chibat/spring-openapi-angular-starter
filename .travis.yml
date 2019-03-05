@@ -1,0 +1,19 @@
+language: java
+jdk: openjdk11
+
+install:
+  - nvm install
+  - npm install
+
+branches:
+  only:
+    - master
+script:
+  - cd backend
+  - bash gradlew bootJar
+
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+    - frontend/node_modules
