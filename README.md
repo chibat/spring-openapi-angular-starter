@@ -37,6 +37,13 @@ $ npm start
 Open following URL by Web browser.  
 http://localhost:4200/
 
+## Generate the client code
+
+```
+cd backend
+./gradlew openApiGenerate
+```
+
 ### blog
 
 [Japanese]()
