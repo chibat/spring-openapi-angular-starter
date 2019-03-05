@@ -5,6 +5,26 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http'; // ★
+import { ApiModule } from './client/api.module' // ★
+import { BASE_PATH } from './client/variables' // ★
+
+import {
+  // MatSidenavModule,
+  MatInputModule,
+  // MatIconModule,
+  MatToolbarModule,
+  // MatListModule,
+  // MatRadioModule,
+  MatFormFieldModule,
+  MatInput,
+  // MatSelectModule,
+  // MatOptionModule,
+  MatButtonModule,
+} from '@angular/material';
+
+
 @NgModule({
   declarations: [
     AppComponent
@@ -12,9 +32,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    FormsModule,
+    MatInputModule,
+    MatToolbarModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    HttpClientModule, // ★
+    ApiModule // ★
   ],
-  providers: [],
+  providers: [{provide: BASE_PATH, useValue: window.location.origin}], // ★
   bootstrap: [AppComponent]
 })
 export class AppModule { }

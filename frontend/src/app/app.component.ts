@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CalculatorService } from './client/api/calculator.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,19 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'frontend';
+
+  arg1: number;
+  arg2: number;
+  result: number;
+
+  constructor(private  calculatorService: CalculatorService) {
+  }
+
+  add() {
+    if (this.arg1 || this.arg2) {
+      this.calculatorService
+        .add(this.arg1, this.arg2)
+        .subscribe(data => this.result = data.result);
+    }
+  }
 }
