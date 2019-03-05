@@ -18,6 +18,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
+import { Request } from '../model/request';
 import { Response } from '../model/response';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -62,28 +63,16 @@ export class CalculatorService {
     /**
      * add
      * 
-     * @param arg1 arg1
-     * @param arg2 arg2
+     * @param request request
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public add(arg1: number, arg2: number, observe?: 'body', reportProgress?: boolean): Observable<Response>;
-    public add(arg1: number, arg2: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Response>>;
-    public add(arg1: number, arg2: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Response>>;
-    public add(arg1: number, arg2: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-        if (arg1 === null || arg1 === undefined) {
-            throw new Error('Required parameter arg1 was null or undefined when calling add.');
-        }
-        if (arg2 === null || arg2 === undefined) {
-            throw new Error('Required parameter arg2 was null or undefined when calling add.');
-        }
-
-        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
-        if (arg1 !== undefined && arg1 !== null) {
-            queryParameters = queryParameters.set('arg1', <any>arg1);
-        }
-        if (arg2 !== undefined && arg2 !== null) {
-            queryParameters = queryParameters.set('arg2', <any>arg2);
+    public add(request: Request, observe?: 'body', reportProgress?: boolean): Observable<Response>;
+    public add(request: Request, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Response>>;
+    public add(request: Request, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Response>>;
+    public add(request: Request, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        if (request === null || request === undefined) {
+            throw new Error('Required parameter request was null or undefined when calling add.');
         }
 
         let headers = this.defaultHeaders;
@@ -99,11 +88,16 @@ export class CalculatorService {
 
         // to determine the Content-Type header
         const consumes: string[] = [
+            'application/json'
         ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
 
-        return this.httpClient.get<Response>(`${this.configuration.basePath}/rest/api/add`,
+        return this.httpClient.post<Response>(`${this.configuration.basePath}/rest/api/add`,
+            request,
             {
-                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

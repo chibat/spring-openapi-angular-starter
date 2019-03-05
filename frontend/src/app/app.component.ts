@@ -18,7 +18,7 @@ export class AppComponent {
   add() {
     if (this.arg1 || this.arg2) {
       this.calculatorService
-        .add(this.arg1, this.arg2)
+        .add({arg1: this.arg1, arg2: this.arg2})
         .subscribe(data => this.result = data.result);
     }
   }
