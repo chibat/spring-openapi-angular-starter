@@ -46,4 +46,4 @@ cd backend
 
 ### blog
 
-[Japanese]()
+[Japanese](https://qiita.com/chibato/items/e4a748db12409b40c02f)

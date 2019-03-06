@@ -11,16 +11,9 @@ import { ApiModule } from './client/api.module' // ★
 import { BASE_PATH } from './client/variables' // ★
 
 import {
-  // MatSidenavModule,
   MatInputModule,
-  // MatIconModule,
   MatToolbarModule,
-  // MatListModule,
-  // MatRadioModule,
   MatFormFieldModule,
-  MatInput,
-  // MatSelectModule,
-  // MatOptionModule,
   MatButtonModule,
 } from '@angular/material';
 
