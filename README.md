@@ -26,7 +26,7 @@ $ ./gradlew bootRun
 Open following URL by Web browser.  
 http://localhost:8080/
 
-## Run frontend dev server
+## Run the frontend dev server
 
 ```
 $ cd frontend
@@ -40,8 +40,8 @@ http://localhost:4200/
 ## Generate the client code
 
 ```
-cd backend
-./gradlew openApiGenerate
+$ cd backend
+$ ./gradlew openApiGenerate
 ```
 
 ### blog
